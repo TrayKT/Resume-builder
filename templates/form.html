@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    <div class="max-w-4xl mx-auto px-6 py-10 bg-white shadow-lg rounded-lg mt-10">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">PDF Resume Builder</h1>
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            <div>
+                <label for="name" class="block text-gray-700 font-semibold">Name</label>
+                <input type="text" name="name" id="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+
+            <div>
+                <label for="email" class="block text-gray-700 font-semibold">Email</label>
+                <input type="email" name="email" id="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+
+            <div>
+                <label for="phone" class="block text-gray-700 font-semibold">Phone</label>
+                <input type="text" name="phone" id="phone" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+
+            <div>
+                <label for="personal_link" class="block text-gray-700 font-semibold">Personal Link (Portfolio/LinkedIn)</label>
+                <input type="url" name="personal_link" id="personal_link" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500">
+                <div id="qrcode-container" class="mt-4 flex justify-center"></div>
+            </div>
+
+            <div>
+                <label for="summary" class="block text-gray-700 font-semibold">Profile Summary</label>
+                <textarea name="summary" id="summary" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="education" class="block text-gray-700 font-semibold">Education</label>
+                <textarea name="education" id="education" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="skills" class="block text-gray-700 font-semibold">Skills</label>
+                <textarea name="skills" id="skills" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="experience" class="block text-gray-700 font-semibold">Work Experience</label>
+                <textarea name="experience" id="experience" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="languages" class="block text-gray-700 font-semibold">Languages</label>
+                <textarea name="languages" id="languages" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="certificates" class="block text-gray-700 font-semibold">Certificates</label>
+                <textarea name="certificates" id="certificates" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="awards" class="block text-gray-700 font-semibold">Honors & Awards</label>
+                <textarea name="awards" id="awards" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="interests" class="block text-gray-700 font-semibold">Interests</label>
+                <textarea name="interests" id="interests" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div>
+                <label for="photo" class="block text-gray-700 font-semibold">Upload Profile Photo</label>
+                <input type="file" name="photo" id="photo" accept="image/*" class="mt-2 block w-full text-sm text-gray-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-md file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-blue-50 file:text-blue-700
+                  hover:file:bg-blue-100">
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-200">
+                    Generate PDF Resume
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="text-center mt-10 text-sm text-gray-500">
+        &copy; 2025 Resume Builder. All rights reserved.
+    </footer>
+
+    <script>
+        document.getElementById('personal_link').addEventListener('input', function() {
+            const link = this.value;
+            const qrcodeContainer = document.getElementById('qrcode-container');
+
+            // Clear previous QR code
+            qrcodeContainer.innerHTML = '';
+
+            if (link) {
+                // Create new QR code
+                const qrcodeDiv = document.createElement('div');
+                qrcodeDiv.id = 'qrcode';
+                qrcodeContainer.appendChild(qrcodeDiv);
+
+                new QRCode(document.getElementById('qrcode'), {
+                    text: link,
+                    width: 128,
+                    height: 128,
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+        });
+    </script>
+</body>
+</html>
